@@ -1,0 +1,214 @@
+A) Write an Android code to complete the following Array/List operations
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TableRow
+android:orientation="horizontal">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="100dp"
+android:text="List1" />
+<EditText
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:id="@+id/l1"/>
+</TableRow>
+<TableRow
+android:orientation="horizontal">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="100dp"
+android:text="List2" />
+<EditText
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:id="@+id/l2"/>
+</TableRow>
+<TableRow
+android:orientation="vertical">
+<RadioGroup
+android:id="@+id/rg"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+<RadioButton
+android:id="@+id/rd1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Union" />
+<RadioButton
+android:id="@+id/rd2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Intersection" />
+</RadioGroup>
+<Button
+android:layout_height="wrap_content"
+android:layout_width="wrap_content"
+android:text="SHOW"
+android:id="@+id/btn"/>
+</TableRow>
+</TableLayout>
+MainActivity.java
+package com.example.myunionintersection;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Collections;
+public class MainActivity extends AppCompatActivity {
+EditText list1, list2;
+String str1="", str2="";
+RadioGroup rg;
+RadioButton rd1, rd2;
+Button btn;
+ArrayList<String> l1, l2;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+rg = (RadioGroup) findViewById(R.id.rg);
+btn = (Button) findViewById(R.id.btn);
+btn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+list1 = (EditText) findViewById(R.id.l1);
+list2 =(EditText) findViewById(R.id.l2);
+str1 = list1.getText().toString();
+str2 = list2.getText().toString();
+//String[] strl1 = str1.split(",");
+//String[] strl2 = str2.split(",");
+l1 = new ArrayList<String>(Collections.singleton(str1));
+l2 = new ArrayList<String>(Collections.singleton(str2));
+int id = rg.getCheckedRadioButtonId();
+switch(id){
+case R.id.rd1:l1.addAll(l2);
+Toast.makeText(MainActivity.this, "Union=" + l1.toString(),
+Toast.LENGTH_SHORT).show();
+break;
+case R.id.rd2:l1.retainAll(l2);
+Toast.makeText(MainActivity.this, "Intersection=" + l1.toString(),
+Toast.LENGTH_SHORT).show();
+break;
+default:
+Toast.makeText(MainActivity.this, "Please select radio button",
+Toast.LENGTH_SHORT).show();
+}
+}
+});
+}
+}
+
+
+
+
+B) Java Android Program to demonstrate login form with validation.
+
+
+ActivityMain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/teal_700"
+tools:context=".MainActivity">
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:layout_marginLeft="16dp"
+android:layout_marginRight="16dp"
+android:layout_centerInParent="true">
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter Email"
+android:id="@+id/et1"/>
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter Password"
+android:id="@+id/et2"
+android:inputType="textPassword"
+/>
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Login"
+android:background="#3f76ff"
+android:textColor="#fff"
+android:id="@+id/b"/>
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Not a member? Sign in"
+android:textAlignment="center"
+android:textSize="30dp"/>
+</LinearLayout>
+</RelativeLayout>
+MainActivity.java
+package com.example.myassignment_1;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+EditText et1 = (EditText) findViewById(R.id.et1);
+EditText et2 = (EditText) findViewById(R.id.et2);
+Button b = (Button) findViewById(R.id.b);
+AwesomeValidation av = new AwesomeValidation(ValidationStyle.BASIC);
+b.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+{
+String e1 = et1.getText().toString();
+String e2 = et1.getText().toString();
+av.addValidation(et1, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",
+"invalid");
+av.addValidation(et2, "\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$\"",
+"wrong pass");
+if(e1.equals("")||e2.equals(""))
+{
+Toast toast = Toast.makeText(getApplicationContext(), "Invalid emailid ",
+Toast.LENGTH_SHORT);
+toast.setMargin(50, 50);
+toast.show();
+}
+else
+{
+if (et1.equals("abc@gmail.com")) {
+if (et2.equals("abc12356")) {
+av.validate();
+{
+Toast toast = Toast.makeText(getApplicationContext(), "Invalid
+pass ", Toast.LENGTH_SHORT);
+toast.setMargin(50, 50);
+toast.show();
+}
+}
+}
+}
+}
+}
+});}}
+

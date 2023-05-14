@@ -1,0 +1,44 @@
+A) Write an Android Program to Demonstrate Date Picker Dialog in Android
+
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<DatePicker
+android:id="@+id/dp"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content" />
+<Button
+android:id="@+id/b"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="click date"
+android:onClick="myclick"/>
+</LinearLayout>
+MainActivity.java
+package com.example.datepicker;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+DatePicker dp=(DatePicker) findViewById(R.id.dp);
+String d=dp.getDayOfMonth()+" "+dp.getMonth()+" "+dp.getYear();
+Toast.makeText(getApplicationContext(), d,
+Toast.LENGTH_LONG).show();
+}
+}
+
+

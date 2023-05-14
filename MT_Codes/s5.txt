@@ -1,0 +1,76 @@
+A) Write an Android Program to Change the Image Displayed on the Screen
+
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<ImageSwitcher
+android:layout_width="match_parent"
+android:layout_height="500dp"
+android:id="@+id/is"
+tools:ignore="MissingConstraints" />
+<Button
+android:id="@+id/bt"
+android:layout_width="100dp"
+android:layout_height="75dp"
+android:text="img slider"/>
+</LinearLayout>
+MainActivity.java
+package com.example.myimage_switcher;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
+public class MainActivity extends AppCompatActivity {
+private ImageSwitcher is;
+int imgs[]={R.drawable.img, R.drawable.img_1,R.drawable.img_2};
+int cnt=imgs.length;
+int currindex=-1;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+ImageSwitcher is=(ImageSwitcher) findViewById(R.id.is);
+Button bt=(Button) findViewById(R.id.bt);
+is.setFactory(new ViewSwitcher.ViewFactory() {
+@Override
+public View makeView() {
+ImageView iv=new ImageView(getApplicationContext());
+iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
+iv.setLayoutParams(new
+ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+LinearLayout.LayoutParams.WRAP_CONTENT));
+return iv;
+}
+});
+Animation in=
+AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
+Animation out=
+AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
+is.setInAnimation(in);
+is.setInAnimation(out);
+bt.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+currindex++;
+if(currindex==cnt)
+currindex=0;
+is.setImageResource(imgs[currindex]);
+}
+});
+}
+}

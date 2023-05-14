@@ -1,0 +1,191 @@
+B) Create table Company (id, name, address, phno). Create Android Application for performing the following operation on the table.(using sqlite database)
+i) Insert New Company Details.
+ii) Show All the Company Details.
+
+
+
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TableRow>
+<EditText
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:id="@+id/et1"
+android:hint="name"/>
+</TableRow>
+<TableRow>
+<EditText
+android:layout_height="50dp"
+android:layout_width="200dp"
+android:id="@+id/et2"
+android:hint="address"/>
+</TableRow>
+<TableRow>
+<EditText
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:id="@+id/et3"
+android:hint="contact"/>
+</TableRow>
+<TableRow>
+<Button
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:text="SAVE"
+android:id="@+id/b1"/>
+</TableRow>
+<TableRow>
+<Button
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:text="SHOW"
+android:id="@+id/b2"/>
+</TableRow>
+<TableRow>
+<ListView
+android:layout_height="wrap_content"
+android:layout_width="wrap_content"
+android:id="@+id/lv"/>
+</TableRow>
+</TableLayout>
+MainActivity.java
+package com.example.mycompany;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+import java.util.Collections;
+import java.util.List;
+public class MainActivity extends AppCompatActivity {
+EditText et1, et2, et3;
+Button b1, b2;
+ListView lv;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+et1 = (EditText) findViewById(R.id.et1);
+et2 = (EditText) findViewById(R.id.et2);
+et3 = (EditText) findViewById(R.id.et3);
+b1 = (Button) findViewById(R.id.b1);
+b2 = (Button) findViewById(R.id.b2);
+lv = (ListView) findViewById(R.id.lv);
+MyDB mydb = new MyDB(this, "company.db", null, 1);
+String name = et1.getText().toString();
+String addr = et2.getText().toString();
+String contact = et3.getText().toString();
+b1.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+long r = mydb.addDetails(name, addr, contact);
+if(r>0){
+Toast.makeText(MainActivity.this, "Values inserted successfully",
+Toast.LENGTH_SHORT).show();
+}
+else{
+Toast.makeText(MainActivity.this, "Error in inserting values",
+Toast.LENGTH_SHORT).show();
+}
+}
+});
+b2.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+List<Company> l = mydb.getDetails();
+Toast.makeText(getApplicationContext(),l.toString(),Toast.LENGTH_LONG).show()
+;
+ArrayAdapter aa = new
+ArrayAdapter<Company>(getApplicationContext(),
+android.R.layout.simple_list_item_1);
+lv.setAdapter(aa);
+}
+});
+}
+}
+Company.java
+package com.example.mycompany;
+import android.util.Log;
+public class Company {
+String cname, addr, contact;
+public Company(String ccname, String caddr, String ccontact){
+this.cname = ccname;
+this.addr = caddr;
+this.contact = ccontact;
+}
+public String getCname(){
+return this.cname;
+}
+public String getAddr(){
+return this.addr;
+}
+public String getContact(){
+return this.contact;
+}
+@Override public String toString(){
+String val = this.cname + " " + this.addr + " " + this.contact;
+Log.d("Customer=",val);
+return val;
+}
+}
+MyDB.java
+package com.example.mycompany;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import java.util.ArrayList;
+class MyDB extends SQLiteOpenHelper {
+String dbname = "company";
+public MyDB(Context c, String dbname, SQLiteDatabase.CursorFactory cf, int
+version){
+super(c, dbname, cf, version);
+}
+@Override public void onCreate(SQLiteDatabase db){
+db.execSQL("create table company(cname text, caddr text, cphone text)");
+}
+@Override
+public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+}
+public long addDetails(String name, String addr, String contact){
+ContentValues cv = new ContentValues();
+cv.put("cname", name);
+cv.put("caddr", addr);
+cv.put("cphone", contact);
+SQLiteDatabase db = this.getWritableDatabase();
+long ret = db.insert("company", null, cv);
+return ret;
+}
+public ArrayList<Company> getDetails(){
+String sql = "select * from customer";
+SQLiteDatabase db = this.getReadableDatabase();
+ArrayList<Company> clist =new ArrayList();
+Cursor c = db.rawQuery(sql, null);
+if(c.getCount()>0){
+c.moveToFirst();
+do{
+String name = c.getString(c.getColumnIndexOrThrow("cname"));
+String addr= c.getString(c.getColumnIndexOrThrow("caddr"));
+String contact = c.getString(c.getColumnIndexOrThrow("cphone"));
+String val = name + " " + addr + " " + contact;
+Company c1 = new Company(name, addr, contact);
+Log.d("Company=",c1.toString());
+clist.add(c1);
+}while(c.moveToNext());
+}
+return clist;
+}
+}
+

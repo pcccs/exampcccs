@@ -1,0 +1,109 @@
+B) By using Spinner, Buttons. Write a Android program to draw following GUI.
+
+
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TableRow>
+<TextView
+android:id="@+id/tv"
+android:layout_width="200dp"
+android:layout_height="50dp"
+android:text="Enter Item:"
+android:textSize="30dp"/>
+<EditText
+android:id="@+id/et"
+android:layout_width="200dp"
+android:layout_height="50dp"
+android:textSize="30dp"/>
+</TableRow>
+<TableRow>
+<Button
+android:id="@+id/b1"
+android:layout_width="200dp"
+android:layout_height="80dp"
+android:textSize="15dp"
+android:text="Add to list"/>
+<Button
+android:id="@+id/b2"
+android:layout_width="200dp"
+android:layout_height="80dp"
+android:text="Remove from list"
+android:textSize="15dp" />
+</TableRow>
+<TableRow>
+<TextView
+android:id="@+id/tv1"
+android:layout_width="200dp"
+android:layout_height="50dp"
+android:text="See response below"
+android:textSize="20dp"/>
+</TableRow>
+<TableRow>
+<Spinner
+android:id="@+id/sp"
+android:layout_width="200dp"
+android:layout_height="50dp"/>
+</TableRow>
+</TableLayout>
+MainActivity.java
+package com.example.myspinner;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Arrays;
+public class MainActivity extends AppCompatActivity {
+Button b1,b2;
+EditText et;
+Spinner spinner;
+String data[]={"Fruits"};
+ArrayList list=new ArrayList(Arrays.asList(data));
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+b1=(Button)findViewById(R.id.b1);
+b2=(Button)findViewById(R.id.b2);
+et=(EditText)findViewById(R.id.et);
+spinner=(Spinner)findViewById(R.id.sp);
+ArrayAdapter adapter=new ArrayAdapter(this,
+androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,list);
+spinner.setAdapter(adapter);
+b1.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+String s=et.getText().toString();
+list.add(s);
+adapter.notifyDataSetChanged();
+spinner.setAdapter(adapter);
+Toast.makeText(getApplicationContext(), "Item added to spinner",
+Toast.LENGTH_SHORT).show();
+}
+});
+b2.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+String s=et.getText().toString();
+list.remove(s);
+adapter.notifyDataSetChanged();
+spinner.setAdapter(adapter);
+Toast.makeText(getApplicationContext(), "Item removed from spinner",
+Toast.LENGTH_SHORT).show();
+}
+});
+}
+}
+
+

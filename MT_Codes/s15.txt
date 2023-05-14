@@ -1,0 +1,166 @@
+A) Write an Android code to merge given two Array/List
+
+
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TableRow >
+<TextView
+android:layout_width="match_parent"
+android:layout_height="100dp"
+android:text="list 1"
+android:textAlignment="center" />
+<EditText
+android:id="@+id/et1"
+android:layout_width="375dp"
+android:layout_height="match_parent"
+android:textAlignment="center" />
+</TableRow>
+<TableRow >
+<TextView
+android:layout_width="100dp"
+android:layout_height="50dp"
+android:text="list 2"
+android:textAlignment="center" />
+<EditText
+android:id="@+id/et3"
+android:layout_width="match_parent"
+android:layout_height="100dp"
+android:textAlignment="center" />
+</TableRow>
+<TableRow >
+<TextView
+android:layout_width="100dp"
+android:layout_height="50dp"
+android:text="list 3"
+android:textAlignment="center" />
+<EditText
+android:id="@+id/et2"
+android:layout_width="match_parent"
+android:layout_height="100dp"
+android:textAlignment="center" />
+</TableRow>
+<Button
+android:id="@+id/btn"
+android:layout_height="50dp"
+android:layout_width="20dp"
+android:hint="merge"/>
+</TableLayout>
+MainActivity.java
+package com.example.merge_list;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+public class MainActivity extends AppCompatActivity {
+EditText et1, et2,et3;
+Button btn;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+btn = (Button) findViewById(R.id.btn);
+btn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+et1 = (EditText) findViewById(R.id.et1);
+et2 = (EditText) findViewById(R.id.et2);
+et3 = (EditText) findViewById(R.id.et3);
+String ss1 = et1.getText().toString();
+String ss2 = et2.getText().toString();
+String ss3 = et3.getText().toString();
+List<String> l1 = new ArrayList<String>(Collections.singleton(ss1));
+List<String> l2 = new ArrayList<String>(Collections.singleton(ss2));
+List<String> l3 = new ArrayList<String>(Collections.singleton(ss3));
+List<String> l = new ArrayList<String>();
+l1.addAll(l2);
+l1.addAll(l3);
+Toast.makeText(MainActivity.this, "merge=" + l1.toString(),
+Toast.LENGTH_SHORT).show();
+}
+});
+}
+}
+
+
+
+
+B) Write an Android Application to send Email.
+
+
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/to"
+android:hint="to"/>
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/sub"
+android:hint="sub"/>
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/msg"
+android:hint="msg"/>
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/send"
+android:text="Send"/>
+</LinearLayout>
+MainActivity.java
+package com.example.myemail;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+public class MainActivity extends AppCompatActivity {
+EditText etto,etmessage,etsubject;
+Button btsend;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+etto=findViewById(R.id.to);
+etmessage=findViewById(R.id.msg);
+etsubject=findViewById(R.id.sub);
+btsend=findViewById(R.id.send);
+btsend.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+Intent intent =new Intent(Intent.ACTION_VIEW,
+Uri.parse("mailto:"+ etto.getText().toString()));
+intent.putExtra(Intent.EXTRA_SUBJECT,etsubject.getText().toString());
+intent.putExtra(Intent.EXTRA_TEXT,etmessage.getText().toString());
+startActivity(intent);
+}
+});
+}
+}
+
