@@ -1,0 +1,138 @@
+
+
+A) Write a C program to map a given file in memory and display the contain of mapped file in reverse
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/io.h>
+#include <sys/mman.h>
+int main(int argc, char *argv[])
+{
+unsigned char *f, *g;
+int size;
+struct stat s;
+const char * file_name = argv[1];
+int fd = open(argv[1], O_RDONLY);
+int status = fstat(fd, &s);
+size = s.st_size;
+int i;
+f = (char *) mmap (0, size, PROT_READ, MAP_PRIVATE, fd, 0);
+//g = (char *) mmap (0, size, PROT_READ, MAP_PRIVATE, fd, 0);
+for(i = 0; i < size; i++) {
+char c;
+c = f[i];
+putchar(c);
+}
+//ABOVE THIS WORKS
+// int z = 0;
+//while(f[z] != NULL) {
+//z++;
+// printf("%d", z);
+// }
+int x;
+int y = 0;
+close(fd);
+FILE *f1;
+f1 = fopen(argv[2], "w+");
+for(x = size - 1; x >= 0; x--)
+{
+char c;
+c = f[x];
+fputc(c, f1);
+}
+return 0;
+}
+
+
+B) Write a C program that behaves like a shell (command interpreter). It has its own prompt say
+“NewShell$”. Any normal shell command is executed from your shell by starting a child process to
+execute the system program corresponding to the command. It should additionally interpret the
+following command.
+i) list f<dirname> - print name of all files in directory
+ii) list n <dirname> - print number of all entries
+iii) list i<dirname> - print name and inode of all files
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<dirent.h>
+char *buff,*t1,*t2,*t3,ch;
+int pid;
+void list(char t2,char *t3)
+{
+DIR *dir;
+struct dirent *entry;
+int cnt=0;
+dir=opendir(t3);
+if (dir==NULL)
+{
+printf("Directory %s not found",t3);
+return;
+}
+switch(t2)
+{
+case 'f' : while((entry=readdir(dir))!=NULL)
+{
+printf("%s\n",entry->d_name);
+}
+break;
+case 'n' : while((entry=readdir(dir))!=NULL)
+cnt++;
+printf("Total No of Entries: %d\n",cnt);
+break;
+case 'i' : while((entry=readdir(dir))!=NULL)
+{
+printf("\n%s\t %d",entry->d_name,entry->d_ino);
+}
+break;
+default : printf("Invalid argument");
+}
+closedir(dir);
+}
+main()
+{
+while(1)
+{
+printf("myshell$");
+fflush(stdin);
+t1=(char *)malloc(80);
+t2=(char *)malloc(80);
+t3=(char *)malloc(80);
+buff=(char *)malloc(80);
+fgets(buff,80,stdin);
+sscanf(buff,"%s %s %s",t1,t2,t3);
+if(strcmp(t1,"pause")==0)
+exit(0);
+else if(strcmp(t1,"list")==0)
+list(t2[0],t3);
+else
+{
+pid=fork();
+if(pid<0)
+printf("Child process is not created\n");
+else if(pid==0)
+{
+execlp("/bin",NULL);
+if(strcmp(t1,"exit")==0)
+exit(0);
+system(buff);
+}
+else
+{
+wait(NULL);
+exit(0);
+}
+}
+}
+}

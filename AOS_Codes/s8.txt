@@ -1,0 +1,105 @@
+
+
+A) Write a C program to get and set the resource limits such as files, memory associated with a process.
+
+
+#include <stdio.h>
+#include <sys/resource.h>
+#include <string.h>
+#include <errno.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+int main() {
+struct rlimit old_lim, lim, new_lim;
+// Get old limits
+if( getrlimit(RLIMIT_NOFILE, &old_lim) == 0)
+printf("Old limits -> soft limit= %ld \t"
+" hard limit= %ld \n", old_lim.rlim_cur,
+old_lim.rlim_max);
+else
+fprintf(stderr, "%s\n", strerror(errno));
+// Set new value
+lim.rlim_cur = 3;
+lim.rlim_max = 1024;
+// Set limits
+if(setrlimit(RLIMIT_NOFILE, &lim) == -1)
+fprintf(stderr, "%s\n", strerror(errno));
+// Get new limits
+if( getrlimit(RLIMIT_NOFILE, &new_lim) == 0)
+printf("New limits -> soft limit= %ld "
+"\t hard limit= %ld \n", new_lim.rlim_cur,
+new_lim.rlim_max);
+else
+fprintf(stderr, "%s\n", strerror(errno));
+return 0;
+}
+Output:
+Old limits -> soft limit= 1048576 hard limit= 1048576
+New limits -> soft limit= 3 hard limit= 1024
+
+
+
+
+B) Write a C program which receives file names as command line arguments and display those filenames in ascending order according to their sizes.
+(e.g $ a.out a.txt b.txt c.txt, …)
+
+
+#include<stdio.h>
+#include<dirent.h>
+#include<string.h>
+#include<sys/stat.h>
+#include<time.h>
+#include<stdlib.h>
+structfilelist
+{
+charfname[100];
+intfsize;
+};
+int main(intargc,char *argv[])
+{
+DIR *dp;
+inti,j,k;
+structdirent *ep;
+struct stat sb;
+charmon[100];
+structfilelist f1[100],temp;
+j=0;
+for(i=1;i<argc;i++)
+{
+dp=opendir("./");
+if (dp!=NULL)
+{
+while(ep=readdir(dp))
+{
+if((strcmp(ep->d_name,argv[i]))==0)
+{
+stat(ep->d_name,&sb);
+strcpy(f1[j].fname,ep->d_name);
+f1[j].fsize=sb.st_size;
+j++;
+break;
+}
+}
+}
+(void)closedir(dp);
+}
+for(i=0;i<j;i++)
+{
+for(k=0;k<=j;k++)
+{
+if(f1[i].fsize< f1[k].fsize)
+{
+temp=f1[k];
+f1[k]=f1[i];
+f1[i]=temp;
+}
+}
+}
+for(i=0;i<j;i++)
+{
+printf("%s\t%d\n",f1[i].fname,f1[i].fsize);
+}
+return 0;
+}
