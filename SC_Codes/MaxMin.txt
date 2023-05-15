@@ -1,0 +1,110 @@
+#include<stdio.h>
+
+void MaxMin(int Row,int Col,float arr[4][4],float brr[4][4])
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    float max = 0.0;
+    float crr[10] = {0.0};
+    float drr[4][4] = {{0.0}};
+
+    printf("Printing Set A\n");
+    for(i = 1;i <= Row;i++)
+    {
+        for(j = 1;j <= Col;j++)
+        {
+            printf("%.1f\t",arr[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Printing Set B\n");
+    for(i = 1;i <= Row;i++)
+    {
+        for(j = 1;j <= Col;j++)
+        {
+            printf("%.1f\t",brr[i][j]);
+        }
+        printf("\n");
+    }
+
+    for(i = 1;i <= Row;i++)
+    {
+        for(j = 1;j <= Col;j++)
+        {
+            for(k = 1;k <= Col;k++)
+            {
+                if(arr[i][k] < brr[k][j])
+                {
+                    crr[k] = arr[i][k];
+                }
+                else 
+                {
+                    crr[k] = brr[k][j];
+                }
+            }
+            max = crr[0];
+            for(k = 1;k <= Col;k++)
+            {
+                if(crr[k] > max)
+                {
+                    max = crr[k];
+                }
+            }
+            drr[i][j] = max;
+        }
+    }
+
+    printf("Max min Composition of Set A and Set B is : \n");
+    for(i = 1;i <= Row;i++)
+    {
+        for(j = 1;j <= Col;j++)
+        {
+            printf("%.1f\t",drr[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    float arr[4][4] = {{0.0}};
+    float brr[4][4] = {{0.0}};
+    int i = 0;
+    int j = 0;
+    int Row = 0;
+    int Col = 0;
+
+    printf("Jay Ganesh...\n");
+
+    printf("Enter Number of Rows You Want...\n");
+    scanf("%d",&Row);
+
+    printf("Enter Number of Columns You Want..\n");
+    scanf("%d",&Col);
+
+    printf("Enter Element in Fuzzy Set A\n");
+    for(i = 1;i <= Row;i++)
+    {
+        for(j = 1;j <= Col;j++)
+        {
+            printf("Enter Element Number : %d%d\n",i,j);
+            scanf("%f",&arr[i][j]);
+        }
+    }
+
+    printf("Enter Element in Matrix 2\n");
+    for(i = 1;i <= Row;i++)
+    {
+        for(j = 1;j <= Col;j++)
+        {
+            printf("Enter Element Number : %d%d\n",i,j);
+            scanf("%f",&brr[i][j]);
+        }
+    }   
+
+    MaxMin(Row,Col,arr,brr);
+ 
+    return 0;
+}

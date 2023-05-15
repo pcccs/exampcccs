@@ -1,0 +1,229 @@
+//Required Libraries
+#include<stdio.h>
+#include<stdlib.h>
+
+//Function To Find Fuzzy Union of Set A And Set B
+float *Union(int No,float arr[20],float crr[20],float deno[20])
+{
+    int i = 0;
+    int j = 0;
+
+    float frr[20] = {0};   //Declaring array for Union Denominator 
+    float *err = malloc(sizeof(float) * 20); 
+
+    //Logic To Find Union of Set A and Set B 
+    for(i = 1;i <= No;i++)
+    {
+        if(arr[i] >= crr[i]) //if Numerator of Set A is Greater than Numberator of Set B then Go Inside
+        {
+            err[i] = arr[i];    //Add Values of Numerator of Set A in Union numerator
+            frr[i] = deno[i];    //Add Values of Denominator of Set A in Union Denominator
+        }
+        else 
+        {
+            err[i] = crr[i];    //Add Values of Numerator of Set B in Union numerator
+            frr[i] = deno[i];    //Add Values of Demominator of Set B in Union Denominator
+        }
+    }
+
+    //Printing Union Calculated of Set A And Set B 
+    printf("Printing Fuzzy Union Of Set A and Set B \n");
+    printf("{");
+    for(i = 1;i <= No;i++)
+    {
+        printf("(%6.1f/%6.1f),",err[i],frr[i]);
+
+    }
+    printf("}\n");
+
+    return err;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Function To Calculate Fuzzy Instersection of Set A and Set B 
+float *Intersection(int No,float arr[20],float crr[20],float deno[20])
+{
+    int i = 0;
+    int j = 0;
+
+    float frr[20] = {0};    //Declaring Array for intersection of Denominator
+    float *err = malloc(sizeof(float) * 20); 
+
+    //Logic To Calculate Intersection of Given Two Sets 
+    for(i = 1;i <= No;i++)
+    {
+        if(arr[i] <= crr[i])  //if Numerator of Set A is less than Numberator of Set B then Go Inside
+        {
+            err[i] = arr[i];  //Add Values of Numerator of Set A in Intersection numerator
+            frr[i] = deno[i];  //Add Values of Denominator of Set A in Intersection Denominator         
+        }
+        else 
+        {
+            err[i] = crr[i];   //Add Values of Numerator of Set B in Intersection numerator
+            frr[i] = deno[i];   //Add Values of Denominator of Set B in Intersection Denominator 
+        }
+    }
+    
+    //Printing Fuzzy Intersection Set A and Set B Calculated
+    printf("Printing Fuzzy Intersection Of Set A and Set B \n");
+    printf("{");
+    for(i = 1;i <= No;i++)
+    {
+        printf("(%6.1f/%6.1f),",err[i],frr[i]);
+    }
+    printf("}\n");
+
+    return err;
+}
+
+//Function To Calculate Fuzzy Complement of Set A 
+float *ComplementA(int No,float arr[20],float deno[20])
+{
+    int i = 0;
+    int j = 0;
+
+    float frr[20] = {0}; //Declaring Denominator array for Complement of Set A
+    float *err = malloc(sizeof(float) * 20); 
+
+    //Logic To Calculate Complement of Set A 
+    for(i = 1;i <= No;i++)
+    {
+        err[i] = 1-(arr[i]);
+        frr[i] = deno[i];
+    }
+
+    printf("Printing Fuzzy Complement Of Set A\n");
+    printf("{");
+    for(i = 1;i <= No;i++)
+    {
+        printf("(%6.1f/%6.1f),",err[i],frr[i]);
+    }
+    printf("}\n");
+    return err;
+}
+
+float *ComplementB(int No,float crr[20],float deno[20])
+{
+    int i = 0;
+    int j = 0;
+
+    float frr[20] = {0}; //Declaring Denominator array for Complement of Set B
+    float *err = malloc(sizeof(float) * 20); 
+    
+    //Logic To Calculate Complement of Set B
+    for(i = 1;i <= No;i++)
+    {
+        err[i] = 1-(crr[i]);
+        frr[i] = deno[i];
+    }
+
+    printf("Printing Fuzzy Complement Of Set B\n");
+    printf("{");
+    for(i = 1;i <= No;i++)
+    {
+        printf("(%6.1f/%6.1f),",err[i],frr[i]);
+    }
+    printf("}\n");
+    return err;
+}
+
+int main()
+{
+    int No = 0;   //Number of Elements in Sets
+    int No3 = 0;  //Number of Switch Cases(Choice You Want)
+    int i = 0;    //For Travelling Forloop(of Set A)
+    int j = 0;    //For Travelling ForLoop(of Set B)
+    int k = 0;   //For Travelling ForLoop(of Set deno)
+    
+    float arr[20] = {0.0};  //Declaring array for Set A Numerator
+    float deno[20] = {0.0};  //Declaring array of Denominator 
+    float crr[20] = {0.0};  //Declaring array for Set B Numerator
+
+    printf("Enter No. of Membership Elements of Set A And B\n");
+    scanf("%d",&No);
+
+    printf("Enter Common Denominator For Both Sets\n");
+    for(k = 1;k <= No;k++)
+    {
+        printf("Enter Demoninator Elemet No %d\n",k);
+        scanf("%f",&deno[k]);
+    }
+    
+    printf("Printing deno\n");
+    printf("{");
+    for(k = 1;k <= No;k++)
+    {
+        printf("%0.1f, ",deno[k]);
+    }
+    printf("}\n");
+
+    printf("Enter Membership Elements in Set A\n");
+    for(i = 1;i <= No;i++)
+    {
+        printf("Enter Memership Element No %d\n",i);
+        scanf("%f",&arr[i]);
+    }
+
+    printf("Enter Membership Elements in Set B\n");
+    for(j = 1;j <= No;j++)
+    {
+        printf("Enter Memership Element No %d\n",i);
+        scanf("%f",&crr[j]);
+    }
+
+    printf("Printing Entered Set A\n");
+    printf("{");
+    for(i = 1;i <= No;i++)
+    {
+        printf("(%6.1f/%6.1f),",arr[i],deno[i]);
+    }
+    printf("}\n");
+
+    printf("Printing Entered Set B\n");
+    printf("{");
+    for(j = 1;j <= No;j++)
+    {
+        printf("(%6.1f/%6.1f),",crr[j],deno[j]);
+    }
+    printf("}\n");
+
+    float *res1 = Union(No,arr,crr,deno);
+    float *res2 = Intersection(No,arr,crr,deno);
+    float *res3 = ComplementA(No,arr,deno);
+    float *res4 = ComplementB(No,crr,deno);
+    float *lhs = ComplementA(No,res1,deno);
+   
+    printf("lhs is \n");
+    printf("{");
+    for (i=1;i<=No;i++) 
+    {   
+        printf( "%6.1f/%6.1f",lhs[i],deno[i]);
+    }
+    printf("}");
+    printf("\n");
+
+    float *rhs = Intersection(No,res3,res4,deno);
+    printf("Rhs is \n");
+    printf("{");
+    for (i=1;i<=No;i++) 
+    {   
+        printf( "(%6.1f/%6.1f)",rhs[i],deno[i]);
+    }
+    printf("}");
+    printf("\n");
+   
+    for(i=1;i<No;i++)
+    {
+        if(lhs[i]==rhs[i])
+        {
+            printf("demorgans law is proved \n");
+        }
+        else
+        {
+            printf("demorgans law is not  proved \n");
+        }
+    }
+
+    return 0;
+}

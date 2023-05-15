@@ -1,0 +1,160 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void Algebric_Sum(int No,float arr[20],float brr[20],float crr[20],float drr[20])
+{
+    int i = 0;
+    float err[20] = {0.0};
+    float frr[20] = {0.0};
+
+    for(i = 0;i < No;i++)
+    {
+        err[i] = (arr[i] + crr[i]) - (arr[i] * crr[i]);
+        frr[i] = brr[i]; 
+    }
+
+    printf("Printing Algebric Sum Of Set A and Set B \n");
+    printf("{");
+    for(i = 0;i < No;i++)
+    {
+        printf("(%6.1f/%6.1f),",err[i],frr[i]);
+    }
+    printf("}\n");    
+}
+
+void Algebric_Product(int No,float arr[20],float brr[20],float crr[20],float drr[20])
+{
+    int i = 0;
+    float err[20] = {0.0};
+    float frr[20] = {0.0};
+
+    for(i = 0;i < No;i++)
+    {
+        err[i] = arr[i] * crr[i];
+        frr[i] = brr[i]; 
+    }
+
+    printf("Printing Algebric Product Of Set A and Set B \n");
+    printf("{");
+    for(i = 0;i < No;i++)
+    {
+        printf("(%6.1f/%6.1f),",err[i],frr[i]);
+    }
+    printf("}\n");    
+}
+
+void CartesianProduct(int No,float arr[20],float crr[20])
+{
+    int i = 0;
+    int j = 0;
+    float Mult[10][10];
+
+    for(i = 0;i < No;i++)
+    {
+        for(j = 0;j < No;j++)
+        {
+            if(arr[i] < crr[j])
+            {
+                Mult[i][j] = arr[i];
+            }
+            else 
+            {
+                Mult[i][j] = crr[i];
+                printf("%6.1f",Mult[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int No = 0;   //Number of Elements Want in Set A
+    int No2 = 0;  //Number of Elements Want in Set B
+    int No3 = 0;  //Number of Switch Cases(Choice You Want)
+    int i = 0;    //For Travelling Forloop(of Set A)
+    int j = 0;    //For Travelling ForLoop(of Set B)
+    
+    float arr[20] = {0.0};  //Declaring array for Set A Numerator
+    float brr[20] = {0.0};  //Declaring array for Set A Denominator 
+    float crr[20] = {0.0};  //Declaring array for Set B Numerator
+    float drr[20] = {0.0};  //Declaring array for Set B Denominator
+
+    //Enter Size of Set A
+    printf("Enter Number of Elements You Want is Set A \n");
+    scanf("%d",&No);
+
+    //Enter Size of Set B
+    printf("Enter Number of Elements You Want is Set B \n");
+    scanf("%d",&No2);
+
+    //Entering ELements in Set A
+    printf("Enter Elements in Set A\n");
+    for(i = 1;i <= No;i++)
+    {
+        printf("Enter Numerator Element %d\n",i);
+        scanf("%f",&arr[i]);
+
+        printf("Enter Denominator Element %d\n",i);
+        scanf("%f",&brr[i]);
+    }
+
+    //Entering Elements in Set B
+    printf("Enter Elements in Set B\n");
+    for(j = 1;j <= No;j++)
+    {
+        printf("Enter Numerator Element %d\n",j);
+        scanf("%f",&crr[j]);
+
+        printf("Enter Denominator Element %d\n",j);
+        scanf("%f",&drr[j]);
+    }
+
+    //Printing Entered Set A Values
+    printf("Printing Entered Set A\n");
+    printf("{");
+    for(i = 1;i <= No;i++)
+    {
+        printf("(%6.1f/%6.1f),",arr[i],brr[i]);
+    }
+    printf("}\n");
+
+    //Printing Entered Set B Values
+    printf("Printing Entered Set B\n");
+    printf("{");
+    for(j = 1;j <= No;j++)
+    {
+        printf("(%6.1f/%6.1f),",crr[j],drr[j]);
+    }
+    printf("}\n");
+
+    //While To Travel Cases Till Value is Not True
+    while(1)
+    {
+        printf("Enter your choice\n");
+        
+        //Enter Your Choice To Select Cases
+        printf("1.Algebric_Product\n2.Algebric_Sum\n3.Cartesian_Product\n4.EXIT\n");
+        scanf("%d",&No3);
+
+        switch(No3)
+        {
+            case 1 : 
+                Algebric_Product(No,arr,brr,crr,drr);
+                break;
+            case 2 :
+                Algebric_Sum(No,arr,brr,crr,drr);
+                break;
+            case 3 :
+                CartesianProduct(No,arr,crr);
+                break;
+            case 4 :
+                exit(0);
+                break;
+            default :
+                printf("Invalid Choice\n");
+        } 
+    }
+       
+    return 0;
+}
